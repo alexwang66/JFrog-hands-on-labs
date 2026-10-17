@@ -2,6 +2,8 @@
 
 本 Lab 讓學員用一個命令檢查 MCP Server 並查詢 Project Catalog，再用三段 Codex 提示詞完成安裝、Allow 與 Block 驗證。學員不需要封裝、發佈、登錄 MCP 或設定 Tool Policy。
 
+使用 GitHub Codespaces 時，開啟 Copilot Chat 的 **Local Agent** 並輸入 `/module4`。Copilot 會呼叫受控的一鍵腳本、判讀 Catalog，並在條件通過時透過 Agent Guard 完成安裝與 Allow 測試。只有講師明確核准 Block 測試時，改輸入 `/module4 run-block=true`。Catalog 為空時會安全停止；以下命令與提示詞保留作為本機備援。
+
 本機直接掛載僅可做離線 Smoke Test，不代表治理成功。
 
 ## 學員只做四件事

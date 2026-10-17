@@ -43,6 +43,14 @@ Codex 停止安裝，讀取受治理版本清單並建議 axios@1.20.0
 
 ## Quick Start：學員自助操作
 
+使用 GitHub Codespaces 時，開啟 Copilot Chat 的 **Local Agent** 並輸入：
+
+```text
+/module1
+```
+
+Copilot 只會呼叫 `bash scripts/run-module.sh 1`，自動完成本節的連線、Repository 綁定與 Live Demo。以下命令保留作為本機備援與講師排錯參考。
+
 以下流程由學員在專案根目錄自行執行。任何 Server、Project、Repository 或 Registry 不符合預期時都應停止，請講師確認；不可改用公用 Registry 或自行選擇其他 Repository。
 
 ### 1. 檢查必要工具

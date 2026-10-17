@@ -2,6 +2,8 @@
 
 本 Lab 讓學員用一個命令檢查環境並查詢兩個 Skill，再由 Codex 完成安全版本的安裝判斷。學員不需要操作 Repository、上傳 Fixture 或設定 Policy。
 
+使用 GitHub Codespaces 時，開啟 Copilot Chat 的 **Local Agent** 並輸入 `/module3`。Copilot 會呼叫受控的一鍵腳本、判讀結果；只有安全 Skill 的掃描、signed evidence 與 Project 核准都通過時，才透過 JFrog CLI 安裝到 GitHub Copilot，最後整理稽核證據。以下命令與提示詞保留作為本機備援。
+
 ## 學員只做三件事
 
 ### 1. 執行一鍵檢查

@@ -9,4 +9,5 @@ model_cache/
 __pycache__/
 *.pyc
 .jfrog/local/
+.github/skills/
 evidence/private/
