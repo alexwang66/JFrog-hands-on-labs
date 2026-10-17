@@ -47,7 +47,7 @@ if [[ "$blocked_rc" -eq 0 ]]; then
   echo "Safety failure: blocked version unexpectedly installed." >&2
   exit 1
 fi
-if ! rg -q 'ETARGET|No matching version|403|blocked' blocked.stderr; then
+if ! grep -Eq 'ETARGET|No matching version|403|blocked' blocked.stderr; then
   echo "Installation failed for an unexpected reason:" >&2
   sed -n '1,80p' blocked.stderr >&2
   exit 1

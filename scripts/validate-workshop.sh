@@ -63,7 +63,14 @@ for module in 1 2 3 4; do
     "$ROOT_DIR/.github/prompts/module${module}.prompt.md"
 done
 
-if rg -q --hidden --glob '!.git/**' \
+if grep -ERq \
+  --exclude-dir=.git \
+  --exclude-dir=.jfrog \
+  --exclude-dir=.venv \
+  --exclude-dir=node_modules \
+  --exclude-dir=model_cache \
+  --exclude='*.png' \
+  --exclude='*.zip' \
   "(JFROG_ACCESS_TOKEN|API_KEY|PASSWORD)=['\"]?[A-Za-z0-9_-]{12,}" "$ROOT_DIR"; then
   echo "Possible secret found in workshop files." >&2
   exit 1

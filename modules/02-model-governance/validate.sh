@@ -18,7 +18,8 @@ grep -q '^JFROG_PYPI_VIRTUAL_REPO=workshop-pypi$' "$MODULE_DIR/module.env.exampl
 grep -q '^JFROG_HUGGINGFACE_REPO=workshop-huggingfaceml$' "$MODULE_DIR/module.env.example"
 grep -q '^HF_ENDPOINT=https://alexwangtrial.jfrog.io/artifactory/api/huggingfaceml/workshop-huggingfaceml$' \
   "$MODULE_DIR/module.env.example"
-if rg -n 'HF_HUB_DISABLE_SSL_VERIFICATION|verify[[:space:]]*=[[:space:]]*False' "$MODULE_DIR/model-client"; then
+if grep -ERn 'HF_HUB_DISABLE_SSL_VERIFICATION|verify[[:space:]]*=[[:space:]]*False' \
+  "$MODULE_DIR/model-client"; then
   echo "TLS verification bypass found." >&2
   exit 1
 fi
