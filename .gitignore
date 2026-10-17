@@ -1,0 +1,12 @@
+.DS_Store
+.env.workshop
+.env.module
+*.log
+*.tgz
+node_modules/
+.venv/
+model_cache/
+__pycache__/
+*.pyc
+.jfrog/local/
+evidence/private/
