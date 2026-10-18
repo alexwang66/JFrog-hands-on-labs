@@ -9,7 +9,7 @@ readonly PYPI_REPO="workshop-pypi"
 readonly BINDING_PATH="$ROOT_DIR/.jfrog/local/package-resolution.json"
 
 export JFROG_CLI_AVOID_NEW_VERSION_WARNING=true
-export JFROG_CLI_USER_AGENT="ai-catalog-workshop-copilot/1.0"
+export JFROG_CLI_USER_AGENT="${JFROG_CLI_USER_AGENT:-ai-catalog-workshop-copilot/1.0}"
 
 usage() {
   printf '用法：bash scripts/run-module.sh <1|2|3|4>\n' >&2

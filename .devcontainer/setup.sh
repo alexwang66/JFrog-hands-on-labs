@@ -10,7 +10,7 @@ readonly PYPI_REPO="workshop-pypi"
 
 export CI=true
 export JFROG_CLI_AVOID_NEW_VERSION_WARNING=true
-export JFROG_CLI_USER_AGENT="ai-catalog-workshop-codespaces/1.0"
+export JFROG_CLI_USER_AGENT="${JFROG_CLI_USER_AGENT:-ai-catalog-workshop-codespaces/1.0}"
 
 cd "$ROOT_DIR"
 
