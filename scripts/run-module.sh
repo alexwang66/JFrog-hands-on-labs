@@ -6,12 +6,25 @@ readonly SERVER_ID="workshop"
 readonly PROJECT="workshop"
 readonly NPM_REPO="workshop-npm"
 readonly PYPI_REPO="workshop-pypi"
+readonly BINDING_PATH="$ROOT_DIR/.jfrog/local/package-resolution.json"
 
 export JFROG_CLI_AVOID_NEW_VERSION_WARNING=true
 export JFROG_CLI_USER_AGENT="ai-catalog-workshop-copilot/1.0"
 
 usage() {
   printf '用法：bash scripts/run-module.sh <1|2|3|4>\n' >&2
+}
+
+binding_matches() {
+  local package_type="$1"
+  local repository="$2"
+
+  [[ -f "$BINDING_PATH" ]] &&
+    jq -e \
+      --arg package_type "$package_type" \
+      --arg repository "$repository" \
+      '.repositories[$package_type] == $repository' \
+      "$BINDING_PATH" >/dev/null
 }
 
 if [[ $# -ne 1 || ! "$1" =~ ^[1-4]$ ]]; then
@@ -34,19 +47,27 @@ fi
 
 case "$1" in
   1)
-    jf setup npm \
-      --server-id "$SERVER_ID" \
-      --repo "$NPM_REPO" \
-      --project "$PROJECT"
-    bash "$ROOT_DIR/scripts/write-package-binding.sh" npm "$NPM_REPO"
+    if binding_matches npm "$NPM_REPO"; then
+      printf 'npm 工作區已綁定：%s\n' "$NPM_REPO"
+    else
+      jf setup npm \
+        --server-id "$SERVER_ID" \
+        --repo "$NPM_REPO" \
+        --project "$PROJECT"
+      bash "$ROOT_DIR/scripts/write-package-binding.sh" npm "$NPM_REPO"
+    fi
     exec bash "$ROOT_DIR/modules/01-curation-package/run-live-demo.sh"
     ;;
   2)
-    jf setup pip \
-      --server-id "$SERVER_ID" \
-      --repo "$PYPI_REPO" \
-      --project "$PROJECT"
-    bash "$ROOT_DIR/scripts/write-package-binding.sh" pypi "$PYPI_REPO"
+    if binding_matches pypi "$PYPI_REPO"; then
+      printf 'PyPI 工作區已綁定：%s\n' "$PYPI_REPO"
+    else
+      jf setup pip \
+        --server-id "$SERVER_ID" \
+        --repo "$PYPI_REPO" \
+        --project "$PROJECT"
+      bash "$ROOT_DIR/scripts/write-package-binding.sh" pypi "$PYPI_REPO"
+    fi
     exec bash "$ROOT_DIR/modules/02-model-governance/run-customer-demo.sh"
     ;;
   3)
