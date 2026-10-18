@@ -64,6 +64,18 @@
 | Project `workshop` 可安裝 MCP | 清單只有表頭，沒有核准項目 |
 | 安全決策 | 依教材停止；未直接掛載本機 MCP |
 
+## Module 1 一句式入口重測
+
+- 完成時間：`2026-10-18T11:05:19Z`
+- Commit：`3986d06`
+- 客戶提示詞：`請幫我完成 Module 1`
+- Copilot 規則：PASS；Repository 全域指令將提示詞映射到唯一核准的 `bash scripts/run-module.sh 1`，且不要求客戶自行輸入終端命令。
+- Codespace Git 狀態：PASS；測試前 `HEAD` 與 `origin/main` 一致，測試後工作區乾淨。
+- npm 綁定：PASS；`workshop-npm`。
+- Curation Block：PASS；`axios@1.14.1` 回傳 `ETARGET`／`No matching version found`。
+- 合規版本：PASS；同一個 `workshop-npm` 顯示並成功安裝 `axios@1.20.0`。
+- 安全邊界：未改用公共 Registry、未建立 Waiver、未修改政策、未記錄任何憑證。
+
 ## Copilot UI 驗證限制
 
 SSH 可驗證 Prompt File、腳本與完整治理行為，但遠端 `code --list-extensions` 不會列出 GitHub Codespaces 瀏覽器客戶端的擴充套件，因此無法在 headless CLI 中證明 Copilot Chat 已顯示 `/module1`～`/module4`。講師最終畫面驗收應開啟 [測試 Codespace](https://workshop-validation-eastus-xrrp79qqx99h99pv.github.dev)，確認 Local Agent 可選取四個 Prompt File；不要在畫面或 Chat 中顯示 Secret。
