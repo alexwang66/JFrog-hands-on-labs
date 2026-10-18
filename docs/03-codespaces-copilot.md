@@ -1,6 +1,6 @@
 # GitHub Codespaces 與 Copilot 學員操作
 
-本頁提供最短的學員路徑：建立 Codespace、開啟 Copilot Chat、輸入一個 `/moduleN` 指令。所有治理邏輯仍受 JFrog Server `workshop`、Project `workshop` 與指定 Virtual Repository 約束。
+本頁提供最短的學員路徑：建立 Codespace、開啟 Copilot Chat、輸入一句自然語言提示詞。所有治理邏輯仍受 JFrog Server `workshop`、Project `workshop` 與指定 Virtual Repository 約束。
 
 ## 講師課前設定
 
@@ -21,24 +21,24 @@ GitHub 也會在 **Code → Codespaces → New with options** 顯示 Repository 
 1. 在 GitHub Repository 選擇 **Code → Codespaces → Create codespace on main**。
 2. 等待終端顯示 `Codespace 教材驗證：PASS`。
 3. 開啟 **Copilot Chat**，確認使用 **Local Agent** 工作階段。
-4. 輸入一個指令：
+4. 輸入一句提示詞：
 
    ```text
-   /module1
+   請幫我完成 Module 1
    ```
 
-   其他獨立模組使用 `/module2`、`/module3` 或 `/module4`。
+   Copilot 會自動執行唯一核准的 Module 1 腳本；不需開啟終端或自行輸入命令。`/module1` 是等價快捷方式，其他獨立模組使用 `/module2`、`/module3` 或 `/module4`。
 
-5. 首次執行時，Copilot 可能要求核准終端工具呼叫；檢查命令必須是 `bash scripts/run-module.sh <模組編號>` 才核准。
+5. 首次執行時，Copilot 可能要求核准終端工具呼叫；檢查命令必須精確為 `bash scripts/run-module.sh 1` 才核准。這只是介面核准，不需要輸入命令。
 6. 依 Copilot 最終表格保存稽核證據；畫面不得包含憑證。
 
 學員不需要輸入 `jf c use`、`jf setup` 或個別 Lab 命令。Codespace 會以 Secret 設定固定的 `workshop` Server，模組執行器會再次檢查 Server、Project 與 Repository。
 
 ## 模組行為
 
-| 指令 | 自動執行 | 安全停止條件 |
+| 提示詞或快捷方式 | 自動執行 | 安全停止條件 |
 |---|---|---|
-| `/module1` | npm 綁定、Axios Curation Block、合規版本安裝 | Registry、惡意版本或建議版本不符合預期 |
+| `請幫我完成 Module 1` 或 `/module1` | npm 綁定、Axios Curation Block、合規版本安裝 | Registry、惡意版本或建議版本不符合預期 |
 | `/module2` | PyPI 綁定、兩個模型候選 Dry Run | 未取得講師對實際模型下載的明確核准 |
 | `/module3` | 教材雜湊驗證、AI Catalog Skill 查詢；條件通過才安裝核准 Skill | Catalog 無資產、掃描中、未核准、evidence 失敗或被阻擋 |
 | `/module4` | MCP 離線 Smoke Test、Agent Guard Catalog 查詢與安全 Allow 測試 | Catalog 無核准 MCP 或 JFrog Agent Plugin 未啟用；不得直接掛載本機 MCP |

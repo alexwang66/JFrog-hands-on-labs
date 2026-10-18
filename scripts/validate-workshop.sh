@@ -74,6 +74,18 @@ for module in 1 2 3 4; do
     "$ROOT_DIR/.github/prompts/module${module}.prompt.md"
 done
 
+for path in \
+  "$ROOT_DIR/README.md" \
+  "$ROOT_DIR/docs/03-codespaces-copilot.md" \
+  "$ROOT_DIR/modules/01-curation-package/README.md"; do
+  grep -Fq '請幫我完成 Module 1' "$path"
+done
+
+grep -Fq '當客戶輸入「請幫我完成 Module 1」' \
+  "$ROOT_DIR/.github/copilot-instructions.md"
+grep -Fq '只呼叫 `bash scripts/run-module.sh 1`' \
+  "$ROOT_DIR/.github/copilot-instructions.md"
+
 if grep -ERq \
   --exclude-dir=.git \
   --exclude-dir=.jfrog \

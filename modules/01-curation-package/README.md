@@ -43,13 +43,13 @@ Codex 停止安裝，讀取受治理版本清單並建議 axios@1.20.0
 
 ## Quick Start：學員自助操作
 
-使用 GitHub Codespaces 時，開啟 Copilot Chat 的 **Local Agent** 並輸入：
+使用 GitHub Codespaces 時，開啟 Copilot Chat 的 **Local Agent**，只需輸入一句提示詞：
 
 ```text
-/module1
+請幫我完成 Module 1
 ```
 
-Copilot 只會呼叫 `bash scripts/run-module.sh 1`，自動完成本節的連線、Repository 綁定與 Live Demo。以下命令保留作為本機備援與講師排錯參考。
+Copilot 只會呼叫 `bash scripts/run-module.sh 1`，自動完成本節的連線、Repository 綁定與 Live Demo。客戶不需開啟終端、選擇版本或自行輸入任何命令；`/module1` 是等價快捷方式。若介面要求終端工具核准，只核准上述精確命令。以下命令保留作為本機備援與講師排錯參考。
 
 以下流程由學員在專案根目錄自行執行。任何 Server、Project、Repository 或 Registry 不符合預期時都應停止，請講師確認；不可改用公用 Registry 或自行選擇其他 Repository。
 
@@ -123,7 +123,7 @@ Module 01 validation: PASS
 bash modules/01-curation-package/run-live-demo.sh
 ```
 
-腳本會在 `/private/tmp` 建立短期測試專案，並依序確認：
+腳本會在系統暫存目錄建立短期測試專案，並依序確認：
 
 1. Registry 為 `workshop-npm`。
 2. `axios@1.14.1` 不在受治理版本清單中。
@@ -209,7 +209,7 @@ codex mcp list
 bash modules/01-curation-package/run-live-demo.sh
 ```
 
-腳本只在 `/private/tmp` 建立短期專案，所有安裝都使用 `--ignore-scripts`，並在結束時清除。它會驗證 Registry、惡意版本不可解析、建議版本以及合規安裝結果。
+腳本只在系統暫存目錄建立短期專案，所有安裝都使用 `--ignore-scripts`，並在結束時清除。它會驗證 Registry、惡意版本不可解析、建議版本以及合規安裝結果。
 
 ## 驗收
 

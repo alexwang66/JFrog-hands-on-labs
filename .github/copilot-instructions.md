@@ -13,6 +13,17 @@
 
 不得猜測、替換或自動建立其他 Server、Project、Repository、Registry 或模型來源。
 
+## Module 1 一句式入口
+
+當客戶輸入「請幫我完成 Module 1」或語意相同的 Module 1 執行要求時，視為已要求執行本模組：
+
+1. 不要求客戶開啟終端、複製命令、選擇套件版本或再次確認。
+2. 只呼叫 `bash scripts/run-module.sh 1`；不得增加參數，也不得另外執行 `jf`、`npm` 或 Registry 命令。
+3. 若 Copilot 顯示終端工具核准，請客戶只核准上述精確命令；這是唯一需要的介面操作。
+4. 腳本完成後，直接回報 Server、Project、Repository、測試版本、Allow/Block 結果與執行時間；若腳本安全停止，則回報原因與下一個合規步驟。
+
+`/module1` 是上述自然語句的等價快捷方式，兩種入口都必須遵守相同規則。
+
 ## 執行規則
 
 1. 執行模組時只呼叫 `bash scripts/run-module.sh <1|2|3|4>`；不得自行拼湊繞過腳本的命令。

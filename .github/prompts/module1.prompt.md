@@ -6,7 +6,9 @@ agent: agent
 
 請依照 [專案守則](../../AGENTS.md)、[Copilot 守則](../copilot-instructions.md) 與 [Module 1 指引](../../modules/01-curation-package/README.md)，代表工作坊學員完成 Module 1。
 
-1. 只執行 `bash scripts/run-module.sh 1`，不要改寫腳本、版本或 Registry。
+客戶已透過 `/module1` 要求執行。不要要求客戶開啟終端、貼上命令、選擇版本或再次確認；直接開始執行。若介面要求終端工具核准，只提示客戶核准下列精確命令。
+
+1. 只執行 `bash scripts/run-module.sh 1`，不要改寫腳本、增加參數、版本或 Registry。
 2. 確認 `axios@1.14.1` 被 Curation 阻擋，且同一個 `workshop-npm` 提供腳本預期的合規版本。
 3. 阻擋後不得切換來源、版本、政策或建立 Waiver。
 4. 若驗證失敗，安全停止並說明要由講師檢查的項目；不要要求學員把 Token 貼到 Chat。

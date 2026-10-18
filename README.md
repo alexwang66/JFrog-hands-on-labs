@@ -8,19 +8,19 @@
 
 ## Quick Start
 
-學員建議使用 GitHub Codespaces；環境建立完成後，只需在 Copilot Chat 的 **Local Agent** 輸入一個指令：
+學員建議使用 GitHub Codespaces；環境建立完成後，只需在 Copilot Chat 的 **Local Agent** 輸入一句提示詞：
 
 ```text
-/module1
+請幫我完成 Module 1
 ```
 
-其他獨立模組使用 `/module2`、`/module3` 或 `/module4`。完整流程：
+Copilot 會自動呼叫唯一核准的 `bash scripts/run-module.sh 1`，客戶不需開啟終端或自行輸入命令。`/module1` 是等價快捷方式；其他獨立模組仍可使用 `/module2`、`/module3` 或 `/module4`。完整流程：
 
 1. 講師完成 [SaaS 申請與開課前檢查](docs/01-saas-request-checklist.md)及 [Codespaces/Copilot 課前設定](docs/03-codespaces-copilot.md)，包含一次性的 JFrog Agent Plugin 信任設定。
 2. 講師將短期、最小權限的 `JFROG_ACCESS_TOKEN` 設為 GitHub Codespaces Secret；不得寫入 Repository 或貼到 Chat。
 3. 學員在 GitHub 選擇 **Code → Codespaces → Create codespace on main**。
-4. 等待 `Codespace 教材驗證：PASS`，開啟 Copilot Chat 的 Local Agent，輸入 `/moduleN`。
-5. 若 Copilot 要求終端工具權限，只核准 `bash scripts/run-module.sh <模組編號>`。
+4. 等待 `Codespace 教材驗證：PASS`，開啟 Copilot Chat 的 Local Agent，輸入「請幫我完成 Module 1」。
+5. 若 Copilot 要求終端工具權限，只核准精確的 `bash scripts/run-module.sh 1`；不需自行輸入任何命令。
 
 Codespace 會固定使用 Server `workshop` 與 Project `workshop`，並綁定課程指定的 Virtual Repository。學員不需自行輸入 `jf c use`、`jf setup` 或各 Lab 的命令。
 
