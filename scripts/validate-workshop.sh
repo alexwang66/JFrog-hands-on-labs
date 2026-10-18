@@ -14,6 +14,7 @@ required_files=(
   ".github/prompts/module3.prompt.md"
   ".github/prompts/module4.prompt.md"
   "scripts/run-module.sh"
+  "scripts/write-package-binding.sh"
   "templates/policy-matrix.md"
   "docs/00-workshop-overview.md"
   "docs/01-saas-request-checklist.md"
@@ -49,9 +50,19 @@ done
 for script in \
   "$ROOT_DIR/.devcontainer/setup.sh" \
   "$ROOT_DIR/scripts/run-module.sh" \
+  "$ROOT_DIR/scripts/write-package-binding.sh" \
   "$ROOT_DIR/modules/02-model-governance/run-customer-demo.sh"; do
   bash -n "$script"
 done
+
+grep -Fq 'write-package-binding.sh" npm "$NPM_REPO"' \
+  "$ROOT_DIR/.devcontainer/setup.sh"
+grep -Fq 'write-package-binding.sh" pypi "$PYPI_REPO"' \
+  "$ROOT_DIR/.devcontainer/setup.sh"
+grep -Fq 'write-package-binding.sh" npm "$NPM_REPO"' \
+  "$ROOT_DIR/scripts/run-module.sh"
+grep -Fq 'write-package-binding.sh" pypi "$PYPI_REPO"' \
+  "$ROOT_DIR/scripts/run-module.sh"
 
 node -e 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"))' \
   "$ROOT_DIR/.devcontainer/devcontainer.json"

@@ -38,6 +38,7 @@ case "$1" in
       --server-id "$SERVER_ID" \
       --repo "$NPM_REPO" \
       --project "$PROJECT"
+    bash "$ROOT_DIR/scripts/write-package-binding.sh" npm "$NPM_REPO"
     exec bash "$ROOT_DIR/modules/01-curation-package/run-live-demo.sh"
     ;;
   2)
@@ -45,6 +46,7 @@ case "$1" in
       --server-id "$SERVER_ID" \
       --repo "$PYPI_REPO" \
       --project "$PROJECT"
+    bash "$ROOT_DIR/scripts/write-package-binding.sh" pypi "$PYPI_REPO"
     exec bash "$ROOT_DIR/modules/02-model-governance/run-customer-demo.sh"
     ;;
   3)

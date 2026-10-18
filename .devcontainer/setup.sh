@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 readonly SERVER_ID="workshop"
 readonly PLATFORM_URL="https://alexwangtrial.jfrog.io"
 readonly PROJECT="workshop"
@@ -10,6 +11,8 @@ readonly PYPI_REPO="workshop-pypi"
 export CI=true
 export JFROG_CLI_AVOID_NEW_VERSION_WARNING=true
 export JFROG_CLI_USER_AGENT="ai-catalog-workshop-codespaces/1.0"
+
+cd "$ROOT_DIR"
 
 if ! command -v jf >/dev/null 2>&1; then
   printf '安裝 JFrog CLI...\n'
@@ -37,10 +40,12 @@ if [[ -n "${JFROG_ACCESS_TOKEN:-}" ]]; then
     --server-id "$SERVER_ID" \
     --repo "$NPM_REPO" \
     --project "$PROJECT"
+  bash "$ROOT_DIR/scripts/write-package-binding.sh" npm "$NPM_REPO"
   jf setup pip \
     --server-id "$SERVER_ID" \
     --repo "$PYPI_REPO" \
     --project "$PROJECT"
+  bash "$ROOT_DIR/scripts/write-package-binding.sh" pypi "$PYPI_REPO"
   printf 'JFrog Codespace 設定：PASS\n'
 else
   printf '%s\n' \
