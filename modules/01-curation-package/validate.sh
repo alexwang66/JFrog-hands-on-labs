@@ -9,6 +9,8 @@ test -f "$MODULE_DIR/run-live-demo.sh"
 grep -q '^JFROG_NPM_VIRTUAL_REPO=' "$MODULE_DIR/module.env.example"
 grep -q '^WORKSHOP_BLOCKED_PACKAGE=' "$MODULE_DIR/module.env.example"
 bash -n "$MODULE_DIR/run-live-demo.sh"
+grep -Fq '${TMPDIR:-/tmp}/axios-curation-demo.XXXXXX' \
+  "$MODULE_DIR/run-live-demo.sh"
 grep -q '^JFROG_SERVER_ID=workshop$' "$MODULE_DIR/module.env.example"
 grep -q '^JFROG_URL=https://alexwangtrial.jfrog.io$' "$MODULE_DIR/module.env.example"
 grep -q '^JF_PROJECT=workshop$' "$MODULE_DIR/module.env.example"

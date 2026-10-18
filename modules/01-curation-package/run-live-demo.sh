@@ -19,7 +19,7 @@ if [[ "$actual_registry" != "$EXPECTED_REGISTRY" ]]; then
   exit 1
 fi
 
-test_dir="$(mktemp -d /private/tmp/axios-curation-demo.XXXXXX)"
+test_dir="$(mktemp -d "${TMPDIR:-/tmp}/axios-curation-demo.XXXXXX")"
 trap 'rm -rf "$test_dir"' EXIT
 cd "$test_dir"
 npm init -y >/dev/null
