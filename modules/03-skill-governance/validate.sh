@@ -13,6 +13,17 @@ test -f "$MODULE_DIR/fixtures/env-demo-malicious/SKILL.md"
 test -f "$MODULE_DIR/approved/secure-release-review/SKILL.md"
 test -s "$ARCHIVE"
 
+for document in "$MODULE_DIR/README.md" "$MODULE_DIR/CUSTOMER-GUIDE.md"; do
+  for step in 1 2 3 4; do
+    grep -Fq "## 提示詞 $step" "$document"
+  done
+  grep -Fq '請幫我完成 Module 3' "$document"
+  if grep -Eq '^```(bash|sh|shell)$|bash scripts/' "$document"; then
+    echo "Module 3 customer documents must contain prompts only." >&2
+    exit 1
+  fi
+done
+
 grep -qx 'JFROG_SERVER_ID=workshop' "$MODULE_DIR/module.env.example"
 grep -qx 'JF_PROJECT=workshop' "$MODULE_DIR/module.env.example"
 grep -qx 'JFROG_SKILLS_REPO=' "$MODULE_DIR/module.env.example"

@@ -81,9 +81,9 @@ for path in \
   grep -Fq '請幫我完成 Module 1' "$path"
 done
 
-grep -Fq '當客戶輸入「請幫我完成 Module 1」' \
+grep -Fq '當客戶輸入「請幫我完成 Module N」' \
   "$ROOT_DIR/.github/copilot-instructions.md"
-grep -Fq '只呼叫 `bash scripts/run-module.sh 1`' \
+grep -Fq '只能呼叫對應的 `bash scripts/run-module.sh N`' \
   "$ROOT_DIR/.github/copilot-instructions.md"
 
 if grep -ERq \

@@ -2,6 +2,15 @@
 set -euo pipefail
 
 MODULE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+test -f "$MODULE_DIR/README.md"
+for step in 1 2 3; do
+  grep -Fq "## 提示詞 $step" "$MODULE_DIR/README.md"
+done
+grep -Fq '請幫我完成 Module 2' "$MODULE_DIR/README.md"
+if grep -Eq '^```(bash|sh|shell)$|bash scripts/' "$MODULE_DIR/README.md"; then
+  echo "Module 2 customer document must contain prompts only." >&2
+  exit 1
+fi
 export PYTHONPYCACHEPREFIX="${TMPDIR:-/tmp}/ai-catalog-workshop-pycache"
 python3 -m py_compile \
   "$MODULE_DIR/model-client/download_model.py" \

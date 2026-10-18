@@ -7,6 +7,17 @@ test -f "$MODULE_DIR/CUSTOMER-GUIDE.md"
 test -f "$MODULE_DIR/LIVE-VALIDATION.md"
 test -f "$MODULE_DIR/module.env.example"
 test -x "$MODULE_DIR/run-customer-demo.sh"
+for document in "$MODULE_DIR/README.md" "$MODULE_DIR/CUSTOMER-GUIDE.md"; do
+  for step in 1 2 3 4 5; do
+    grep -Fq "## 提示詞 $step" "$document"
+  done
+  grep -Fq '請幫我完成 Module 4' "$document"
+  grep -Fq 'run-block=true' "$document"
+  if grep -Eq '^```(bash|sh|shell)$|bash scripts/' "$document"; then
+    echo "Module 4 customer documents must contain prompts only." >&2
+    exit 1
+  fi
+done
 grep -qx 'JFROG_SERVER_ID=workshop' "$MODULE_DIR/module.env.example"
 grep -qx 'JF_PROJECT=workshop' "$MODULE_DIR/module.env.example"
 grep -qx 'JFROG_NPM_LOCAL_REPO=' "$MODULE_DIR/module.env.example"

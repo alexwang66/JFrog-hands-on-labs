@@ -1,123 +1,31 @@
-# Module 4 學員快速指引：MCP 與 Agent Guard
+# Module 4 客戶提示詞
 
-本 Lab 讓學員用一個命令檢查 MCP Server 並查詢 Project Catalog，再用三段 Codex 提示詞完成安裝、Allow 與 Block 驗證。學員不需要封裝、發佈、登錄 MCP 或設定 Tool Policy。
-
-使用 GitHub Codespaces 時，開啟 Copilot Chat 的 **Local Agent** 並輸入 `/module4`。Copilot 會呼叫受控的一鍵腳本、判讀 Catalog，並在條件通過時透過 Agent Guard 完成安裝與 Allow 測試。只有講師明確核准 Block 測試時，改輸入 `/module4 run-block=true`。Catalog 為空時會安全停止；以下命令與提示詞保留作為本機備援。
-
-本機直接掛載僅可做離線 Smoke Test，不代表治理成功。
-
-## 學員只做四件事
-
-### 1. 執行一鍵檢查
-
-從專案根目錄執行：
-
-```bash
-bash modules/04-mcp-governance/run-customer-demo.sh
-```
-
-腳本會自動：
-
-1. 連線到 JFrog Server `workshop`。
-2. 執行無外部相依的 MCP Smoke Test。
-3. 查詢 Project `workshop` 可安裝的 MCP。
-
-若 Catalog 只有以下表頭，立即停止並通知講師：
+## 提示詞 1
 
 ```text
-name	type	version	description
+請先閱讀本 Repository 的工作坊守則，說明 Module 4 的 MCP 治理目標、Agent Guard 安全邊界與預期結果。只說明，不要安裝或呼叫任何 MCP Tool。
 ```
 
-不要直接執行或掛載本機 `server.mjs`，也不要從外部 Catalog 補找 MCP。
-
-### 2. 請 Codex 安裝 MCP
-
-只有一鍵檢查能看到 `workshop-ops@1.0.0` 時，才貼入：
+## 提示詞 2
 
 ```text
-請只使用 JFrog Server workshop 與 Project workshop。確認 Catalog 中 workshop-ops 1.0.0 的套件來源、Project Scope 與 Tool Policy，然後透過 Agent Guard 安裝到目前的 Codex。不得建立本機直連、http 或 sse 繞過設定。完成後提醒我重新啟動 Codex，並確認至少能看到一個 Tool。
+請幫我完成 Module 4。只使用 JFrog Server workshop、Project workshop、JFrog AI Catalog 與 Agent Guard，並只執行 Repository 核准的一鍵流程。本機直接掛載僅可做離線 Smoke Test，不得作為治理結果。若 Catalog 為空、資產未核准或 Agent Guard 不可用，立即安全停止，不得從其他 Registry、URL 或本機路徑補找。
 ```
 
-重新啟動 Codex 後執行：
-
-```bash
-codex mcp list
-```
-
-只有 connected、但看不到任何 Tool，仍視為失敗。
-
-### 3. 執行 Allow 測試
-
-貼入：
+## 提示詞 3
 
 ```text
-請呼叫受 Agent Guard 管理的 workshop-ops/get_release_status，release 設為 2026.10-demo。回報結果與 Allow 決策，不要呼叫其他 Tool。
+如果剛才確認 workshop-ops 1.0.0 已核准並透過 Agent Guard 安裝，請只呼叫 workshop-ops/get_release_status，release 使用 2026.10-demo，並回報結果與 Agent Guard Allow 證據。若任何前置條件未通過，請停止，不要呼叫其他 Tool。
 ```
 
-預期結果：
+## 提示詞 4（僅限講師核准）
 
 ```text
-Release 2026.10-demo is ready for review.
+run-block=true。這是講師明確核准的工作坊政策測試。請嘗試呼叫受 Agent Guard 管理的 workshop-ops/deploy_to_production，release 使用 2026.10-demo。若被阻擋，立即停止並回報精確 Policy；不得改用其他 MCP、Shell、直接 API 或本機 Server，也不得執行真實部署。
 ```
 
-講師應同時看到 Agent Guard Allow 稽核事件。
-
-### 4. 執行 Block 測試
-
-只有講師明確指示時才貼入：
+## 提示詞 5
 
 ```text
-這是工作坊政策測試。請嘗試呼叫受 Agent Guard 管理的 workshop-ops/deploy_to_production，release 設為 2026.10-demo。若被阻擋，立即停止並回報精確 Policy；不得改用其他 MCP、Shell、直接 API 或本機 server.mjs。
+請整理 Module 4 的稽核摘要，列出執行時間、Project、MCP 名稱與版本、Catalog、Project Scope、Tool Policy、Smoke Test、Allow 與 Block 結果。缺少的證據請標示「未確認」，不得猜測，也不要顯示任何憑證。
 ```
-
-| 結果 | 判讀 |
-|---|---|
-| Agent Guard 在 Tool 到達 Server 前阻擋 | PASS |
-| `Denied by the demo server's defense-in-depth policy.` | Server 有拒絕，但 Agent Guard 尚未攔截；FAIL |
-| Tool 真正執行部署 | 立即停止並通知講師 |
-
-## 學員完成畫面
-
-向講師提交三張不含憑證的畫面：
-
-1. 一鍵腳本結果，包含 Catalog 中的 `workshop-ops@1.0.0`。
-2. `get_release_status` 結果與 Agent Guard Allow 事件。
-3. `deploy_to_production` 的 Agent Guard Block 事件。
-
-## 講師課前準備
-
-講師需在上課前完成，學員不操作：
-
-1. 明確指定 Module 4 的 npm Local Repository。
-2. 發佈 `@workshop/governed-ops-mcp@1.0.0`，保存 Tarball SHA-256。
-3. 在 MCP Registry 登錄 `workshop-ops@1.0.0`，Scope 只限 Project `workshop`。
-4. 建立 Enforce Tool Policy：
-
-```text
-Allow: workshop-ops/get_release_status
-Block: workshop-ops/deploy_to_production
-Block: workshop-ops/delete_repository
-```
-
-5. 以學員權限預演，確認 Block 發生在 Tool 到達 Server 前。
-
-發佈、刪除、解除封鎖、Project 核准與 Policy 變更都需要講師明確核准。
-
-## 常見問題
-
-| 畫面／錯誤 | 處理方式 |
-|---|---|
-| Catalog 只有表頭 | 停止，請講師完成 MCP 登錄與 Project Scope |
-| `401`／`403` | 只修正 `workshop` 的核准登入，不切換 Server |
-| connected 但 0 tools | 判定失敗，請講師檢查 MCP 套件與 Agent Guard |
-| 只看到 Server 自身拒絕 | 檢查是否直接掛載或 Tool Policy 未生效 |
-| Agent Guard 缺少 macOS ARM64 元件 | 腳本已使用隔離 Cache；若仍失敗，將錯誤交給講師 |
-
-## 安全規則
-
-- 不執行真實部署或刪除。
-- 不直接掛載本機 MCP 作為治理結果。
-- 不顯示或保存 Token、API Key、Cookie、密碼或私鑰。
-- Catalog 為空即停止，不使用其他 Registry 或外部 MCP。
-
-完整實測與尚未完成的平台條件見 [LIVE-VALIDATION.md](LIVE-VALIDATION.md)。
