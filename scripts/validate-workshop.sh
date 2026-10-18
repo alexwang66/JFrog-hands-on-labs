@@ -63,6 +63,8 @@ grep -Fq 'write-package-binding.sh" npm "$NPM_REPO"' \
   "$ROOT_DIR/scripts/run-module.sh"
 grep -Fq 'write-package-binding.sh" pypi "$PYPI_REPO"' \
   "$ROOT_DIR/scripts/run-module.sh"
+grep -Fq "TZ=Asia/Shanghai date '+%Y-%m-%dT%H:%M:%S%z'" \
+  "$ROOT_DIR/scripts/run-module.sh"
 
 node -e 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"))' \
   "$ROOT_DIR/.devcontainer/devcontainer.json"

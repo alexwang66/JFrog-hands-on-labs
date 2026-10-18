@@ -32,6 +32,9 @@ if [[ $# -ne 1 || ! "$1" =~ ^[1-4]$ ]]; then
   exit 2
 fi
 
+printf '執行時間（Asia/Shanghai）：%s\n' \
+  "$(TZ=Asia/Shanghai date '+%Y-%m-%dT%H:%M:%S%z')"
+
 if ! command -v jf >/dev/null 2>&1; then
   printf '找不到 JFrog CLI。請重建 GitHub Codespace，讓 postCreateCommand 完成設定。\n' >&2
   exit 1

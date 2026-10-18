@@ -21,5 +21,5 @@
 ## 提示詞 4
 
 ```text
-請整理 Module 3 的稽核摘要，列出執行時間、Project、Skill 名稱與版本、Catalog、掃描、signed evidence、核准、安裝或阻擋結果。缺少的證據請標示「未確認」，不得猜測，也不要顯示任何憑證。
+請整理 Module 3 的稽核摘要，列出腳本輸出的 Asia/Shanghai 執行時間、Project、Skill 名稱與版本、Catalog、掃描、signed evidence、核准、安裝或阻擋結果。不得以對話時間或 UTC 時間代替；缺少的證據請標示「未確認」，不得猜測，也不要顯示任何憑證。
 ```

@@ -27,5 +27,5 @@ run-block=true。這是講師明確核准的工作坊政策測試。請嘗試呼
 ## 提示詞 5
 
 ```text
-請整理 Module 4 的稽核摘要，列出執行時間、Project、MCP 名稱與版本、Catalog、Project Scope、Tool Policy、Smoke Test、Allow 與 Block 結果。缺少的證據請標示「未確認」，不得猜測，也不要顯示任何憑證。
+請整理 Module 4 的稽核摘要，列出腳本輸出的 Asia/Shanghai 執行時間、Project、MCP 名稱與版本、Catalog、Project Scope、Tool Policy、Smoke Test、Allow 與 Block 結果。不得以對話時間或 UTC 時間代替；缺少的證據請標示「未確認」，不得猜測，也不要顯示任何憑證。
 ```

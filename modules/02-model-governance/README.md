@@ -15,5 +15,5 @@
 ## 提示詞 3
 
 ```text
-請根據剛才的 Module 2 結果整理稽核摘要，列出執行時間、Server、Project、Repository、模型候選、Revision、Endpoint 與 Dry Run 結果。缺少的證據請標示「未確認」，不得猜測，也不要顯示任何憑證。
+請根據剛才的 Module 2 結果整理稽核摘要，列出腳本輸出的 Asia/Shanghai 執行時間、Server、Project、Repository、模型候選、Revision、Endpoint 與 Dry Run 結果。不得以對話時間或 UTC 時間代替；缺少的證據請標示「未確認」，不得猜測，也不要顯示任何憑證。
 ```
