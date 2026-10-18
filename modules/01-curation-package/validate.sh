@@ -3,6 +3,9 @@ set -euo pipefail
 
 MODULE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 test -f "$MODULE_DIR/README.md"
+test "$(wc -l < "$MODULE_DIR/README.md" | tr -d ' ')" -eq 5
+grep -Fxq '# Module 1' "$MODULE_DIR/README.md"
+grep -Fxq '請幫我完成 Module 1' "$MODULE_DIR/README.md"
 test -f "$MODULE_DIR/module.env.example"
 test -f "$MODULE_DIR/LIVE-VALIDATION.md"
 test -f "$MODULE_DIR/run-live-demo.sh"
