@@ -26,6 +26,7 @@ export JFROG_CLI_AVOID_NEW_VERSION_WARNING=true
 export JFROG_CLI_USER_AGENT="${JFROG_CLI_USER_AGENT:-ai-catalog-workshop-codespaces/1.0}"
 
 cd "$ROOT_DIR"
+JFROG_SETUP_READY=false
 
 install_copilot_jfrog_skills() {
   local skill
@@ -66,25 +67,35 @@ done
 
 if [[ -n "${JFROG_ACCESS_TOKEN:-}" ]]; then
   printf '設定 JFrog Server、Project 與 Virtual Repository...\n'
-  printf '%s' "$JFROG_ACCESS_TOKEN" |
+  if ! printf '%s' "$JFROG_ACCESS_TOKEN" |
     jf config add "$SERVER_ID" \
       --url "$PLATFORM_URL" \
       --access-token-stdin \
       --interactive=false \
-      --overwrite
-  jf config use "$SERVER_ID"
-  jf rt ping --server-id "$SERVER_ID"
-  jf setup npm \
+      --overwrite; then
+    printf 'JFrog Server 設定失敗；Live Lab 與 JFrog Skills 安裝已安全停止。\n' >&2
+  elif ! jf config use "$SERVER_ID"; then
+    printf 'JFrog Server 選取失敗；Live Lab 與 JFrog Skills 安裝已安全停止。\n' >&2
+  elif ! jf rt ping --server-id "$SERVER_ID"; then
+    printf 'JFrog 連線失敗；Live Lab 與 JFrog Skills 安裝已安全停止。\n' >&2
+  elif ! jf setup npm \
     --server-id "$SERVER_ID" \
     --repo "$NPM_REPO" \
-    --project "$PROJECT"
-  bash "$ROOT_DIR/scripts/write-package-binding.sh" npm "$NPM_REPO"
-  jf setup pip \
-    --server-id "$SERVER_ID" \
-    --repo "$PYPI_REPO" \
-    --project "$PROJECT"
-  bash "$ROOT_DIR/scripts/write-package-binding.sh" pypi "$PYPI_REPO"
-  printf 'JFrog Codespace 設定：PASS\n'
+    --project "$PROJECT"; then
+    printf '找不到或無權使用 workshop-npm；未改用其他 Repository，Live Lab 與 JFrog Skills 安裝已安全停止。\n' >&2
+  else
+    bash "$ROOT_DIR/scripts/write-package-binding.sh" npm "$NPM_REPO"
+    if ! jf setup pip \
+      --server-id "$SERVER_ID" \
+      --repo "$PYPI_REPO" \
+      --project "$PROJECT"; then
+      printf '找不到或無權使用 workshop-pypi；未改用其他 Repository，Live Lab 與 JFrog Skills 安裝已安全停止。\n' >&2
+    else
+      bash "$ROOT_DIR/scripts/write-package-binding.sh" pypi "$PYPI_REPO"
+      JFROG_SETUP_READY=true
+      printf 'JFrog Codespace 設定：PASS\n'
+    fi
+  fi
 else
   printf '%s\n' \
     '尚未提供 JFROG_ACCESS_TOKEN。Codespace 已建立，但 Module Live Lab 會安全停止。' \
@@ -92,7 +103,10 @@ else
     '不要把 Token 貼入 Copilot Chat。'
 fi
 
-if [[ -f "$ROOT_DIR/.jfrog/local/package-resolution.json" ]] &&
+if [[ "$JFROG_SETUP_READY" == true ]]; then
+  install_copilot_jfrog_skills
+elif [[ -z "${JFROG_ACCESS_TOKEN:-}" ]] &&
+  [[ -f "$ROOT_DIR/.jfrog/local/package-resolution.json" ]] &&
   jq -e --arg repo "$NPM_REPO" \
     '.repositories.npm == $repo' \
     "$ROOT_DIR/.jfrog/local/package-resolution.json" >/dev/null; then
