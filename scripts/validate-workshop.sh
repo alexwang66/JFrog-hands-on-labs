@@ -86,12 +86,6 @@ grep -Fq "TZ=Asia/Shanghai date '+%Y-%m-%dT%H:%M:%S%z'" \
 
 node -e 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"))' \
   "$ROOT_DIR/.devcontainer/devcontainer.json"
-node -e '
-  const config = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
-  if (config.features?.["ghcr.io/devcontainers/features/node:1"]?.version !== "22.20.0") {
-    process.exit(1);
-  }
-' "$ROOT_DIR/.devcontainer/devcontainer.json"
 
 for module in 1 2 3 4; do
   grep -q "^name: module${module}$" \

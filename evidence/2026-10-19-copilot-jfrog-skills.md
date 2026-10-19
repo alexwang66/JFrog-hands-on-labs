@@ -37,4 +37,4 @@
 | Workshop 整體驗證 | PASS |
 | 安全邊界 | 未使用公用 npm Registry；未執行 Module 3 fixture；未發佈、刪除、建立豁免或變更政策 |
 
-現有測試 Codespace 使用 Node `22.15.0`，安裝成功但顯示套件引擎警告。新的 Dev Container 設定已固定 Node `22.20.0`，重建後符合 `skills@1.7.2` 的版本需求。
+現有測試 Codespace 使用 Node `22.15.0`，安裝成功但顯示套件引擎警告。初始化不依賴額外 Node Dev Container Feature，避免影響 Universal 基底映像的建立相容性。
