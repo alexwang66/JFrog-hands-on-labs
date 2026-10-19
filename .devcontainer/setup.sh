@@ -7,12 +7,50 @@ readonly PLATFORM_URL="https://alexwangtrial.jfrog.io"
 readonly PROJECT="workshop"
 readonly NPM_REPO="workshop-npm"
 readonly PYPI_REPO="workshop-pypi"
+readonly NPM_REGISTRY="https://alexwangtrial.jfrog.io/artifactory/api/npm/workshop-npm/"
+readonly SKILLS_CLI_VERSION="1.7.2"
+readonly JFROG_SKILLS_COMMIT="bb18d74b933e22e19fceea9b1bcbcf91135f06a1"
+readonly JFROG_SKILLS_SOURCE="https://github.com/jfrog/jfrog-skills/tree/${JFROG_SKILLS_COMMIT}"
+readonly -a JFROG_SKILLS=(
+  "jfrog"
+  "jfrog-ai-catalog"
+  "jfrog-init"
+  "jfrog-mcp-management"
+  "jfrog-package-curation"
+  "jfrog-reference-architecture"
+  "jfrog-setup-package-managers"
+)
 
 export CI=true
 export JFROG_CLI_AVOID_NEW_VERSION_WARNING=true
 export JFROG_CLI_USER_AGENT="${JFROG_CLI_USER_AGENT:-ai-catalog-workshop-codespaces/1.0}"
 
 cd "$ROOT_DIR"
+
+install_copilot_jfrog_skills() {
+  local skill
+
+  printf '為 GitHub Copilot 安裝 JFrog Skills（commit %s）...\n' \
+    "${JFROG_SKILLS_COMMIT:0:12}"
+  npx --yes \
+    --registry "$NPM_REGISTRY" \
+    "skills@${SKILLS_CLI_VERSION}" add "$JFROG_SKILLS_SOURCE" \
+    --global \
+    --agent github-copilot \
+    --skill "${JFROG_SKILLS[@]}" \
+    --copy \
+    --yes \
+    --json
+
+  for skill in "${JFROG_SKILLS[@]}"; do
+    if [[ ! -f "$HOME/.agents/skills/$skill/SKILL.md" ]]; then
+      printf 'Copilot Skill 安裝驗證失敗：%s\n' "$skill" >&2
+      exit 1
+    fi
+  done
+
+  printf 'GitHub Copilot JFrog Skills：PASS（%s 個）\n' "${#JFROG_SKILLS[@]}"
+}
 
 if ! command -v jf >/dev/null 2>&1; then
   printf '安裝 JFrog CLI...\n'
@@ -50,7 +88,17 @@ if [[ -n "${JFROG_ACCESS_TOKEN:-}" ]]; then
 else
   printf '%s\n' \
     '尚未提供 JFROG_ACCESS_TOKEN。Codespace 已建立，但 Module Live Lab 會安全停止。' \
-    '請由講師在 GitHub Codespaces Secret 設定短期 Token，然後重建 Codespace；不要把 Token 貼入 Copilot Chat。'
+    '請由講師在 GitHub Codespaces Secret 設定短期 Token，然後重建 Codespace。' \
+    '不要把 Token 貼入 Copilot Chat。'
+fi
+
+if [[ -f "$ROOT_DIR/.jfrog/local/package-resolution.json" ]] &&
+  jq -e --arg repo "$NPM_REPO" \
+    '.repositories.npm == $repo' \
+    "$ROOT_DIR/.jfrog/local/package-resolution.json" >/dev/null; then
+  install_copilot_jfrog_skills
+else
+  printf 'JFrog Skills 尚未安裝：找不到 workshop-npm 套件解析綁定。\n'
 fi
 
 bash scripts/validate-workshop.sh

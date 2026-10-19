@@ -19,7 +19,7 @@ GitHub 也會在 **Code → Codespaces → New with options** 顯示 Repository 
 ## 學員操作
 
 1. 在 GitHub Repository 選擇 **Code → Codespaces → Create codespace on main**。
-2. 等待終端顯示 `Codespace 教材驗證：PASS`。
+2. 等待終端依序顯示 `GitHub Copilot JFrog Skills：PASS（7 個）` 與 `Codespace 教材驗證：PASS`。初始化會從 JFrog 官方 `jfrog-skills` 的固定 commit 安裝至 Copilot 全域 Skill 目錄；學員不需執行安裝命令。
 3. 開啟 **Copilot Chat**，確認使用 **Local Agent** 工作階段。
 4. 輸入一句提示詞：
 
@@ -57,6 +57,8 @@ Prompt Files 目前是 GitHub Copilot Preview，且 VS Code 的 Prompt File slas
 ## 官方參考
 
 - [GitHub：Using GitHub Copilot in GitHub Codespaces](https://docs.github.com/en/codespaces/reference/using-github-copilot-in-github-codespaces)
+- [GitHub：Adding agent skills for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
+- [JFrog：jfrog-skills](https://github.com/jfrog/jfrog-skills)
 - [GitHub：Specifying recommended secrets for a repository](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/configuring-dev-containers/specifying-recommended-secrets-for-a-repository)
 - [GitHub：Your first prompt file](https://docs.github.com/en/copilot/tutorials/customization-library/prompt-files/your-first-prompt-file)
 - [Visual Studio Code：Use prompt files](https://code.visualstudio.com/docs/agent-customization/prompt-files)
