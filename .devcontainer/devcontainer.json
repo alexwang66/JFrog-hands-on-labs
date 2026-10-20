@@ -1,0 +1,22 @@
+{
+  "name": "JFrog Workshop",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "remoteEnv": {
+    "JFROG_URL": "https://alexwangtrial.jfrog.io",
+    "JFROG_SERVER_ID": "workshop",
+    "JF_PROJECT": "workshop"
+  },
+  "secrets": {
+    "JFROG_ACCESS_TOKEN": {
+      "description": "JFrog Access Token 已透過 Codespaces Secret 提供；請勿貼入聊天或檔案。"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["GitHub.copilot", "GitHub.copilot-chat"],
+      "settings": {
+        "chat.plugins.marketplaces": ["https://github.com/jfrog/vscode-plugin/"]
+      }
+    }
+  }
+}
