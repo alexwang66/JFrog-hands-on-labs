@@ -5,8 +5,8 @@
 ## 開始使用
 
 1. 在 GitHub 選擇 **Code → Codespaces → Create codespace on main**。
-2. 開啟 Copilot Chat，選擇 Agent 模式。
-3. 開啟 [Module 1](modules/01/README.md)，將提示詞貼到 Copilot Chat。
+2. 開啟 Copilot Chat。
+3. 開啟 [Module 1](modules/01/README.md)，先在 Codespace Terminal 安裝並設定 JFrog CLI，再將提示詞貼到 Copilot Chat。
 
 Codespace 使用既有的 `JFROG_ACCESS_TOKEN` Secret；不要將憑證貼到聊天或檔案。
 
