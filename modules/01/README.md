@@ -2,7 +2,7 @@
 
 ## 前置條件：安裝 JFrog VS Code Agent Plugin
 
-在 VS Code 中開啟 Codespace，使用下列任一方式安裝 JFrog Plugin：
+在 VS Code 中開啟 Codespace，安裝 JFrog Plugin：
 
 1. 点击開啟 magic link：`vscode://chat-plugin/install?source=jfrog/vscode-plugin`。
 
