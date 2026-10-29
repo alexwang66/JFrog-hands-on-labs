@@ -4,13 +4,11 @@
 
 ## Quick Start
 
-1. 使用已配置三个 Codespaces Secret 的仓库创建或重建 Codespace，等待 `postCreateCommand` 显示 `Setup completed`。如果 Codespace 创建于本次配置更新之前，请先运行 **Codespaces: Rebuild Container**；仅重新启动旧容器不会补跑历史的 `postCreateCommand`。
-2. 在 VS Code 中打开 **Copilot Chat**，从聊天面板底部的模式选择器中选择 **Agent**。
-3. 打开 [`COPILOT_PROMPTS.md`](COPILOT_PROMPTS.md)，将“提示词 1”完整粘贴到 Copilot Chat。
-4. 审阅 Copilot 提出的检查命令并确认执行。Copilot 不应显示任何 Secret 的值，也不应安装 npm 依赖。
-5. JFrog MCP 第一次使用时会打开浏览器执行一次 OAuth。完成授权；如果工具没有自动刷新，请打开新的 Copilot Chat，再在同一 Lab 上下文中继续。
-6. Copilot 确认 Plugin、JFrog MCP、CLI 和 npm Virtual Repository 均已就绪后，将“提示词 2”粘贴到聊天。
-7. 审阅 Copilot 提出的命令，只允许它在 `modules/01` 中运行静态检查和实验构建。构建失败是预期结果。
+1. 等待 Codespace 显示 `Setup completed`。Codespace 会自动打开本页；如果容器创建于本次配置更新之前，请先运行 **Codespaces: Rebuild Container**。
+2. 打开命令面板，运行 **MCP: List Servers**，选择 `jfrog`，然后选择 **Start Server**。也可以在 JFrog MCP 配置上方点击 **Start**。
+3. 首次启动时，接受 VS Code 的信任提示并在浏览器中完成 JFrog OAuth。确认 `jfrog` 不再显示 `Stopped` 或 `Failed`。
+4. 打开 **Copilot Chat**，选择 **Agent** 模式，将 [`COPILOT_PROMPTS.md`](COPILOT_PROMPTS.md) 中唯一的提示词完整粘贴进去。
+5. 审阅 Copilot 提出的命令，只允许它在 `modules/01` 中运行静态检查和 npm 实验构建。`npm run build` 失败是预期结果。
 
 Copilot 执行的 `npm run build` 会通过 `jf npm install` 从 `${JF_PROJECT}-npm-virtual` 请求精确版本 `axios@1.14.1`。构建脚本包含 `--ignore-scripts`，即使仓库策略配置错误，也不会运行依赖包的生命周期脚本。
 
@@ -64,14 +62,14 @@ JFrog MCP 使用 OAuth，不使用 `JFROG_ACCESS_TOKEN` 直接登录 MCP。安�
 
 ## API Reference
 
-本实验不提供应用 API。学员通过 Copilot Chat Agent 发起操作；Agent 使用 JFrog MCP 做平台只读检查，并在 Codespace Terminal 中调用 `jf npm install` 完成 Curation 实验。
+本实验不提供应用 API。学员先在 VS Code 中启动 Plugin 自带的 `jfrog` MCP Server，再通过 Copilot Chat Agent 在 Codespace Terminal 中调用 `jf npm install` 完成 Curation 实验。
 
 ## Project Structure
 
 ```text
 modules/01/
 ├── README.md                 # 自动启动配置、Copilot 流程和预期阻断结果
-├── COPILOT_PROMPTS.md        # 学员依次粘贴到 Copilot Chat 的两轮提示词
+├── COPILOT_PROMPTS.md        # 学员粘贴到 Copilot Chat 的单一构建提示词
 ├── package.json              # 固定 axios@1.14.1，并定义安全的实验构建命令
 └── scripts/
     └── validate-lab.mjs      # 不下载依赖的静态配置检查

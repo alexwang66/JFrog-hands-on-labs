@@ -30,6 +30,11 @@
           "https://github.com/jfrog/vscode-plugin/"
         ]
       }
+    },
+    "codespaces": {
+      "openFiles": [
+        "modules/01/README.md"
+      ]
     }
   },
   "postCreateCommand": "bash .devcontainer/setup-jfrog-plugin.sh",

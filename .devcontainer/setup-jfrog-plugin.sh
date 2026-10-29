@@ -109,6 +109,7 @@ copilot plugin list
 
 if [ "$RUN_MODE" = "--plugin-only" ]; then
   printf '%s\n' '[JFrog] Startup check completed: JFrog Plugin is installed and enabled.'
+  printf '%s\n' '[JFrog] Next: in VS Code run "MCP: List Servers", select "jfrog", then choose "Start Server".'
   exit 0
 fi
 
@@ -226,4 +227,5 @@ fi
 
 printf '%s\n' '[JFrog] JFrog Plugin 已安装并启用；插件自带的 JFrog MCP 已配置。'
 printf '%s\n' '[JFrog] JFrog MCP 第一次使用时会通过浏览器完成一次 OAuth 授权。'
+printf '%s\n' '[JFrog] Next: in VS Code run "MCP: List Servers", select "jfrog", then choose "Start Server".'
 printf '%s\n' '[JFrog] Setup completed.'
