@@ -29,11 +29,16 @@ assert.match(
 );
 assert.match(prompts, /npm run validate/, "Copilot 提示词必须先运行静态检查。");
 assert.match(prompts, /npm run build/, "Copilot 提示词必须通过 Copilot 启动实验构建。");
-assert.match(prompts, /不要显示或回显任何 Secret/, "Copilot 提示词必须保护 Secret。");
+assert.match(prompts, /不要显示任何 Secret/, "Copilot 提示词必须保护 Secret。");
 assert.match(prompts, /不要绕过 Artifactory/, "Copilot 提示词必须禁止绕过 Artifactory。");
 assert.match(prompts, /--ignore-scripts/, "Copilot 提示词必须限制恶意依赖脚本执行。");
+assert.match(prompts, /## Copilot 输入/, "Copilot 文档必须明确标出学员输入。");
+assert.match(prompts, /## 预期输出/, "Copilot 文档必须明确标出预期输出。");
 assert.match(readme, /MCP: List Servers/, "README 必须提示学员打开 MCP Server 列表。");
 assert.match(readme, /Start Server/, "README 必须提示学员启动 jfrog MCP Server。");
+assert.match(readme, /### Copilot 输入/, "README 必须直接提供可复制的 Copilot 输入。");
+assert.match(readme, /### 预期输出/, "README 必须直接说明预期输出。");
+assert.match(readme, /Blocked by JFrog Curation/, "README 必须说明预期的 Curation 结论。");
 for (const secretName of ["JFROG_ACCESS_TOKEN", "JFROG_PLATFORM_URL", "JF_PROJECT"]) {
   assert.ok(devcontainer.secrets?.[secretName], `devcontainer 必须声明 ${secretName} Secret。`);
 }

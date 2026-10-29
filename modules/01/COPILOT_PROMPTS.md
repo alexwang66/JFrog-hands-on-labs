@@ -1,27 +1,38 @@
-# Lab 1 Copilot 提示词
+# Lab 1 Copilot 输入与预期输出
 
-启动 `jfrog` MCP Server 后，将以下提示词粘贴到 Codespace 的 Copilot Chat。使用 **Agent** 模式，并在执行前审阅 Agent 提出的每条 Terminal 命令。
+启动 `jfrog` MCP Server 后，将以下内容粘贴到 Codespace 的 Copilot Chat，并选择 **Agent** 模式。
 
-## 构建 npm 项目并解释 Curation 阻断
+## Copilot 输入
 
 ```text
-请执行 JFrog Curation Lab 1 的 npm 项目构建。
+请执行 JFrog Curation Lab 1：
 
-- 不要显示或回显任何 Secret 的值。
-- 不要修改 package.json、package-lock.json、JFrog 配置、npm registry 或 Curation 策略。
-- 不要绕过 Artifactory，不要改用公共 npm registry，不要请求 waiver，也不要尝试其他下载地址。
-- 不要直接运行、导入或执行 axios@1.14.1；只能运行 package.json 中带 --ignore-scripts 的实验构建。
-- Curation 阻断后不要换源重试。
+1. 在 modules/01 运行 npm run validate。
+2. 在 modules/01 运行 npm run build。
 
-先阅读 modules/01/README.md 和 modules/01/package.json，然后在 modules/01 中依次运行：
-1. npm run validate
-2. npm run build
+要求：
+- 不要显示任何 Secret，也不要修改文件、JFrog 配置、npm registry 或 Curation 策略。
+- 不要绕过 Artifactory、换源或请求 waiver。
+- 只能运行 package.json 中带 --ignore-scripts 的构建；不要运行或导入 axios。
+- npm run build 失败是预期结果，请保留并解释原始错误。
+- 如果构建成功，立即停止并报告安全配置异常。
 
-npm run build 预期以非零状态结束。请保留并分析原始错误：
-- 如果是 ETARGET 或 No matching version found，说明 Compliant Version Selection 已在依赖解析阶段排除该版本。
-- 如果是 E403、403 Forbidden 或 Curation policy block，说明 Curation 已在下载阶段阻断该版本。
-
-如果构建意外成功，请立即停止，不要运行或导入 axios，并明确报告安全配置可能存在问题。
-
-最后请用简短表格报告：请求的软件包和版本、使用的 JFrog Virtual Repository、命令退出结果、阻断阶段、策略结论，以及学员应在 JFrog Platform 的哪个 Audit Events 视图中查看证据。不要修改任何文件。
+最后用表格输出：Package、Repository、Build result、Block stage、Conclusion。
 ```
+
+## 预期输出
+
+| 字段 | 预期值 |
+|---|---|
+| Package | `axios@1.14.1` |
+| Repository | `${JF_PROJECT}-npm-virtual` |
+| Build result | `Failed (expected)` |
+| Block stage | `CVS / dependency resolution` 或 `Download` |
+| Conclusion | `Blocked by JFrog Curation` |
+
+可能出现的原始错误：
+
+- `ETARGET` 或 `No matching version found`：依赖解析阶段阻断。
+- `E403`、`403 Forbidden` 或 Curation block：下载阶段阻断。
+
+如果构建成功，不要运行或导入 `axios`，立即停止并报告安全配置异常。
