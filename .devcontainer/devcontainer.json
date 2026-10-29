@@ -2,7 +2,9 @@
   "name": "JFrog Workshop",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:22-bookworm",
   "remoteEnv": {
-    "JFROG_SERVER_ID": "workshop"
+    "JFROG_PLATFORM_URL": "$JFROG_PLATFORM_URL",
+    "JFROG_SERVER_ID": "workshop",
+    "JF_PROJECT": "$JF_PROJECT"
   },
   "secrets": {
     "JFROG_ACCESS_TOKEN": {
@@ -30,5 +32,6 @@
       }
     }
   },
-  "postCreateCommand": "bash .devcontainer/setup-jfrog-plugin.sh"
+  "postCreateCommand": "bash .devcontainer/setup-jfrog-plugin.sh",
+  "postStartCommand": "bash .devcontainer/setup-jfrog-plugin.sh --plugin-only"
 }

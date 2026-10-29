@@ -4,7 +4,7 @@
 
 ## Quick Start
 
-1. 使用已配置三个 Codespaces Secret 的仓库创建或重建 Codespace，等待 `postCreateCommand` 显示 `Setup completed`。
+1. 使用已配置三个 Codespaces Secret 的仓库创建或重建 Codespace，等待 `postCreateCommand` 显示 `Setup completed`。如果 Codespace 创建于本次配置更新之前，请先运行 **Codespaces: Rebuild Container**；仅重新启动旧容器不会补跑历史的 `postCreateCommand`。
 2. 在 VS Code 中打开 **Copilot Chat**，从聊天面板底部的模式选择器中选择 **Agent**。
 3. 打开 [`COPILOT_PROMPTS.md`](COPILOT_PROMPTS.md)，将“提示词 1”完整粘贴到 Copilot Chat。
 4. 审阅 Copilot 提出的检查命令并确认执行。Copilot 不应显示任何 Secret 的值，也不应安装 npm 依赖。
@@ -35,6 +35,8 @@ Codespace 的 `postCreateCommand` 会运行 [`.devcontainer/setup-jfrog-plugin.s
 6. 为 `modules/01` 写入 `jf npm` 项目配置。
 
 JFrog MCP 使用 OAuth，不使用 `JFROG_ACCESS_TOKEN` 直接登录 MCP。安装和地址配置会自动完成，但每位学员第一次使用 MCP 时仍需在浏览器完成一次授权。
+
+此外，`postStartCommand` 会在每次 Codespace 启动时以 `--plugin-only` 模式重新检查 Plugin；该模式是幂等的，不会重新配置 JFrog CLI 或 npm。如果 Plugin 未安装或未启用，它会自动修复并验证最终状态。
 
 ## 预期结果
 

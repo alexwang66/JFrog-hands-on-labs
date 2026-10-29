@@ -4,6 +4,15 @@ set -euo pipefail
 WORKSPACE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 JFROG_SERVER_ID="${JFROG_SERVER_ID:-workshop}"
 JFROG_PLATFORM_URL="${JFROG_PLATFORM_URL:-${JFROG_URL:-}}"
+RUN_MODE="${1:-full}"
+
+case "$RUN_MODE" in
+  full | --plugin-only) ;;
+  *)
+    printf 'ERROR: Unsupported setup mode: %s\n' "$RUN_MODE"
+    exit 2
+    ;;
+esac
 
 echo "[JFrog] Checking prerequisites..."
 
@@ -18,35 +27,9 @@ if [ "$NODE_MAJOR" -lt 22 ]; then
   exit 1
 fi
 
-if [ -z "${JFROG_ACCESS_TOKEN:-}" ]; then
-  printf '%s\n' '找不到 JFROG_ACCESS_TOKEN；请确认 Codespaces Secret 已授权此 Repository，然后重建 Codespace。'
-  exit 1
-fi
-
-if [ -z "$JFROG_PLATFORM_URL" ]; then
-  printf '%s\n' '找不到 JFROG_PLATFORM_URL；请配置对应的 Codespaces Secret，然后重建 Codespace。'
-  exit 1
-fi
-
-if [[ "$JFROG_PLATFORM_URL" == *"://"* || "$JFROG_PLATFORM_URL" == */* ]]; then
-  printf '%s\n' 'JFROG_PLATFORM_URL 必须仅包含主机名，例如 acme.jfrog.io；不要包含 https:// 或路径。'
-  exit 1
-fi
-
-if [ -z "${JF_PROJECT:-}" ]; then
-  printf '%s\n' '找不到 JF_PROJECT；请配置对应的 Codespaces Secret，然后重建 Codespace。'
-  exit 1
-fi
-
-if [[ ! "$JF_PROJECT" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]; then
-  printf '%s\n' '[JFrog] JF_PROJECT 格式无效；仅允许字母、数字、点、下划线和连字符。'
-  exit 1
-fi
-
-JFROG_CLI_URL="https://${JFROG_PLATFORM_URL}"
-
 # Install GitHub Copilot CLI if missing
 if ! command -v copilot >/dev/null 2>&1; then
+  echo "[JFrog] Installing GitHub Copilot CLI..."
   npm install -g @github/copilot
 fi
 
@@ -111,8 +94,50 @@ if ! plugin_enabled; then
   copilot plugin enable jfrog
 fi
 
+if ! plugin_installed; then
+  echo "ERROR: JFrog Plugin installation could not be verified."
+  exit 1
+fi
+
+if ! plugin_enabled; then
+  echo "ERROR: JFrog Plugin is installed but not enabled."
+  exit 1
+fi
+
 echo "[JFrog] Final plugin status:"
 copilot plugin list
+
+if [ "$RUN_MODE" = "--plugin-only" ]; then
+  printf '%s\n' '[JFrog] Startup check completed: JFrog Plugin is installed and enabled.'
+  exit 0
+fi
+
+if [ -z "${JFROG_ACCESS_TOKEN:-}" ]; then
+  printf '%s\n' '找不到 JFROG_ACCESS_TOKEN；请确认 Codespaces Secret 已授权此 Repository，然后重建 Codespace。'
+  exit 1
+fi
+
+if [ -z "$JFROG_PLATFORM_URL" ]; then
+  printf '%s\n' '找不到 JFROG_PLATFORM_URL；请配置对应的 Codespaces Secret，然后重建 Codespace。'
+  exit 1
+fi
+
+if [[ "$JFROG_PLATFORM_URL" == *"://"* || "$JFROG_PLATFORM_URL" == */* ]]; then
+  printf '%s\n' 'JFROG_PLATFORM_URL 必须仅包含主机名，例如 acme.jfrog.io；不要包含 https:// 或路径。'
+  exit 1
+fi
+
+if [ -z "${JF_PROJECT:-}" ]; then
+  printf '%s\n' '找不到 JF_PROJECT；请配置对应的 Codespaces Secret，然后重建 Codespace。'
+  exit 1
+fi
+
+if [[ ! "$JF_PROJECT" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]; then
+  printf '%s\n' '[JFrog] JF_PROJECT 格式无效；仅允许字母、数字、点、下划线和连字符。'
+  exit 1
+fi
+
+JFROG_CLI_URL="https://${JFROG_PLATFORM_URL}"
 
 echo "[JFrog] Access token environment variable is present."
 

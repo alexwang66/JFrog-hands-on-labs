@@ -35,8 +35,28 @@ assert.match(prompts, /enable_jfrog_tools/, "Copilot 提示词必须处理 JFrog
 for (const secretName of ["JFROG_ACCESS_TOKEN", "JFROG_PLATFORM_URL", "JF_PROJECT"]) {
   assert.ok(devcontainer.secrets?.[secretName], `devcontainer 必须声明 ${secretName} Secret。`);
 }
+assert.equal(
+  devcontainer.remoteEnv?.JFROG_PLATFORM_URL,
+  "$JFROG_PLATFORM_URL",
+  "devcontainer 必须将 JFROG_PLATFORM_URL 传给 VS Code 远程环境。",
+);
+assert.equal(
+  devcontainer.remoteEnv?.JF_PROJECT,
+  "$JF_PROJECT",
+  "devcontainer 必须将 JF_PROJECT 传给 VS Code 远程环境。",
+);
+assert.match(
+  devcontainer.postStartCommand ?? "",
+  /setup-jfrog-plugin\.sh --plugin-only/,
+  "Codespace 每次启动时都必须验证 JFrog Plugin。",
+);
 assert.match(setupScript, /copilot plugin install jfrog@jfrog-agent-plugins/, "启动脚本必须安装 JFrog Plugin。");
 assert.match(setupScript, /copilot plugin enable jfrog/, "启动脚本必须启用 JFrog Plugin。");
+assert.ok(
+  setupScript.indexOf("copilot plugin install jfrog@jfrog-agent-plugins") <
+    setupScript.indexOf('if [ -z "${JFROG_ACCESS_TOKEN:-}" ]'),
+  "Plugin 安装必须先于 Secret 校验，避免配置错误阻止 Plugin 安装。",
+);
 assert.match(setupScript, /JFROG_CLI_URL="https:\/\//, "启动脚本必须为 JFrog CLI 构造 HTTPS URL。");
 assert.match(setupScript, /插件自带的 JFrog MCP 已配置/, "启动脚本必须报告 JFrog MCP 配置完成。");
 
