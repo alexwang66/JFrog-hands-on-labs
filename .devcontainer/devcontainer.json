@@ -1,22 +1,34 @@
 {
   "name": "JFrog Workshop",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22-bookworm",
   "remoteEnv": {
-    "JFROG_URL": "https://alexwangtrial.jfrog.io",
-    "JFROG_SERVER_ID": "workshop",
-    "JF_PROJECT": "workshop"
+    "JFROG_SERVER_ID": "workshop"
   },
   "secrets": {
     "JFROG_ACCESS_TOKEN": {
-      "description": "JFrog Access Token 已透過 Codespaces Secret 提供；請勿貼入聊天或檔案。"
+      "description": "JFrog Access Token。仅由 Codespaces 注入，不要写入仓库。"
+    },
+    "JFROG_PLATFORM_URL": {
+      "description": "JFrog Platform 主机名，不包含 https:// 或路径，例如 acme.jfrog.io。"
+    },
+    "JF_PROJECT": {
+      "description": "JFrog Project Key，用于 Agent Guard 和 npm Virtual Repository。"
     }
   },
   "customizations": {
     "vscode": {
-      "extensions": ["GitHub.copilot", "GitHub.copilot-chat"],
+      "extensions": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
+      ],
       "settings": {
-        "chat.plugins.marketplaces": ["https://github.com/jfrog/vscode-plugin/"]
+        "chat.plugins.enabled": true,
+        "chat.useHooks": true,
+        "chat.plugins.marketplaces": [
+          "https://github.com/jfrog/vscode-plugin/"
+        ]
       }
     }
-  }
+  },
+  "postCreateCommand": "bash .devcontainer/setup-jfrog-plugin.sh"
 }

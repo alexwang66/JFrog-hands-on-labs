@@ -1,0 +1,17 @@
+{
+  "name": "jfrog-curation-lab1",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demonstrate JFrog Curation blocking a known malicious npm package.",
+  "type": "module",
+  "scripts": {
+    "build": "jf npm install --ignore-scripts --build-name=lab1-curation --build-number=1",
+    "validate": "node ./scripts/validate-lab.mjs"
+  },
+  "dependencies": {
+    "axios": "1.14.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
